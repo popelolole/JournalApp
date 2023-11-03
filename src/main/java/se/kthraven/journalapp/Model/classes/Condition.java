@@ -1,4 +1,6 @@
-package se.kthraven.journalapp.Model;
+package se.kthraven.journalapp.Model.classes;
+
+import se.kthraven.journalapp.Model.enums.Severity;
 
 import java.util.Date;
 

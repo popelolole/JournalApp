@@ -1,4 +1,4 @@
-package se.kthraven.journalapp.Model;
+package se.kthraven.journalapp.Model.enums;
 
 public enum Role {
     PATIENT,

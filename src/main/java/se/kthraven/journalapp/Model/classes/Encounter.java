@@ -1,4 +1,4 @@
-package se.kthraven.journalapp.Model;
+package se.kthraven.journalapp.Model.classes;
 
 import java.util.ArrayList;
 import java.util.Collection;

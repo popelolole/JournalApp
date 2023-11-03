@@ -1,4 +1,7 @@
-package se.kthraven.journalapp.Model;
+package se.kthraven.journalapp.Model.classes;
+
+import se.kthraven.journalapp.Model.enums.Gender;
+import se.kthraven.journalapp.Model.enums.Role;
 
 import java.util.Collection;
 import java.util.Date;

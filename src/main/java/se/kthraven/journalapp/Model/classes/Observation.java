@@ -1,4 +1,4 @@
-package se.kthraven.journalapp.Model;
+package se.kthraven.journalapp.Model.classes;
 
 public class Observation {
     private final String id;
