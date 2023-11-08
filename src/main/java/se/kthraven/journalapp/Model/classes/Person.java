@@ -2,20 +2,50 @@ package se.kthraven.journalapp.Model.classes;
 
 import se.kthraven.journalapp.Model.enums.Gender;
 import se.kthraven.journalapp.Model.enums.Role;
+import se.kthraven.journalapp.Persistence.entities.PersonDB;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 public class Person {
-    private final String id;
+    private String id;
     private String name;
-    private final Gender gender;
+    private Gender gender;
     private Date dob;
     private String phoneNumber;
     private String email;
     private Role role;
     private Condition condition;
     private Collection<Person> patients;
+    private Person doctor;
+
+    public static Person from(PersonDB personDb){
+        if(personDb == null)
+            return null;
+        Person person = new Person();
+        person.id = personDb.getId();
+        person.name = personDb.getName();
+        person.gender = personDb.getGender();
+        person.dob = personDb.getDob();
+        person.phoneNumber = personDb.getPhoneNumber();
+        person.email = personDb.getEmail();
+        person.role = personDb.getRole();
+        person.condition = Condition.from(personDb.getCondition());
+        person.doctor = from(personDb.getDoctor());
+        Collection<PersonDB> patientDbs = personDb.getPatients();
+        Collection<Person> patients = new ArrayList<>();
+        for(PersonDB patientDb : personDb.getPatients()){
+            Person patient = from(patientDb);
+            patients.add(patient);
+        }
+        person.patients = patients;
+        return person;
+    }
+
+    public Person(){
+
+    }
 
     public Person(String id, String name, Gender gender, Date dob, Role role) {
         this.id = id;
@@ -35,7 +65,7 @@ public class Person {
         this.role = role;
     }
 
-    public Person(String id, String name, Gender gender, Date dob, String phoneNumber, String email, Role role, Condition condition) {
+    public Person(String id, String name, Gender gender, Date dob, String phoneNumber, String email, Role role, Condition condition, Person doctor) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -44,6 +74,7 @@ public class Person {
         this.email = email;
         this.role = role;
         this.condition = condition;
+        this.doctor = doctor;
     }
 
     public Person(String id, String name, Gender gender, Date dob, String phoneNumber, String email, Role role, Collection<Person> patients) {
@@ -57,7 +88,7 @@ public class Person {
         this.patients = patients;
     }
 
-    public Person(String id, String name, Gender gender, Date dob, String phoneNumber, String email, Role role, Condition condition, Collection<Person> patients) {
+    public Person(String id, String name, Gender gender, Date dob, String phoneNumber, String email, Role role, Condition condition, Collection<Person> patients, Person doctor) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -67,6 +98,7 @@ public class Person {
         this.role = role;
         this.condition = condition;
         this.patients = patients;
+        this.doctor = doctor;
     }
 
     public String getId() {

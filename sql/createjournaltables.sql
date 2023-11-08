@@ -10,7 +10,7 @@ CREATE TABLE ´Condition´ (
 CREATE TABLE Person (
 	id VARCHAR(255) PRIMARY KEY,
 	name VARCHAR(128) NOT NULL,
-	gender ENUM('MALE', 'FEMALE'),
+	gender ENUM('MALE', 'FEMALE') NOT NULL,
 	dob DATE NOT NULL,
 	phoneNumber VARCHAR(64),
 	email VARCHAR(128),

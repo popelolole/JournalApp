@@ -28,7 +28,7 @@ public class PersonDB {
     @JoinColumn(name="conditionId")
     private ConditionDB condition;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Collection<PersonDB> patients;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

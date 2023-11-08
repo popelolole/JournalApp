@@ -5,13 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.kthraven.journalapp.Model.IJournalService;
-import se.kthraven.journalapp.Model.JournalService;
-import se.kthraven.journalapp.Model.enums.Gender;
-import se.kthraven.journalapp.Model.enums.Role;
-import se.kthraven.journalapp.Model.records.Person;
+import se.kthraven.journalapp.Model.classes.Person;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -28,8 +23,8 @@ public class Controller {
     }
 
     @GetMapping("/patient")
-    public Person patient(@RequestParam(value = "id", defaultValue="test") String id){
-        Person patient = journalService.getPatient(id);
-        return patient;
+    public Person person(@RequestParam(value = "id", defaultValue="test") String id){
+        Person person = journalService.getPerson(id);
+        return person;
     }
 }

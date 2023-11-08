@@ -1,16 +1,34 @@
 package se.kthraven.journalapp.Model.classes;
 
 import se.kthraven.journalapp.Model.enums.Severity;
+import se.kthraven.journalapp.Persistence.entities.ConditionDB;
 
 import java.util.Date;
 
 public class Condition {
-    private final String id;
-    private final String condition;
+    private String id;
+    private String condition;
     private String description;
     private Severity severity;
-    private final Date dateDiagnosed;
+    private Date dateDiagnosed;
     private Date dateRecovered;
+
+    public static Condition from(ConditionDB conditionDb){
+        if(conditionDb == null)
+            return null;
+        Condition condition = new Condition();
+        condition.id = conditionDb.getId();
+        condition.condition = conditionDb.getCondition();
+        condition.description = conditionDb.getDescription();
+        condition.severity = conditionDb.getSeverity();
+        condition.dateDiagnosed = conditionDb.getDateDiagnosed();
+        condition.dateRecovered = conditionDb.getDateRecovered();
+        return condition;
+    }
+
+    public Condition(){
+
+    }
 
     public Condition(String id, String condition, Severity severity, Date dateDiagnosed) {
         this.id = id;

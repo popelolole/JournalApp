@@ -2,10 +2,10 @@ package se.kthraven.journalapp.Model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.kthraven.journalapp.Model.records.Encounter;
-import se.kthraven.journalapp.Model.records.Person;
+import se.kthraven.journalapp.Model.classes.Encounter;
+import se.kthraven.journalapp.Model.classes.Person;
 import se.kthraven.journalapp.Persistence.IJournalPersistence;
-import se.kthraven.journalapp.Persistence.JournalPersistence;
+import se.kthraven.journalapp.Persistence.entities.PersonDB;
 
 import java.util.Collection;
 
@@ -19,8 +19,10 @@ public class JournalService implements IJournalService{
         return null;
     }
 
-    public Person getPatient(String id){
-        return persistence.getPatient(id);
+    public Person getPerson(String id){
+        PersonDB personDb = persistence.getPerson(id);
+        Person person = Person.from(personDb);
+        return person;
     }
 
     public void createPatient(Person patient){
