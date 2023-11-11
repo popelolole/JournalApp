@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.sql.Date;
 import java.util.UUID;
 
-public class JournalPersistence implements IJournalPersistence{
+public class JournalPersistence implements IJournalPersistence {
 
     @Override
     public Collection<PersonDB> getAllPatients() {

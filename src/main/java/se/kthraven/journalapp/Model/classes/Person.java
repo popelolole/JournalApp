@@ -7,6 +7,7 @@ import se.kthraven.journalapp.Persistence.entities.PersonDB;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Person {
     private String id;
@@ -32,16 +33,31 @@ public class Person {
         person.email = personDb.getEmail();
         person.role = personDb.getRole();
         person.condition = Condition.from(personDb.getCondition());
+
+        persons.put(person.id, person);
+
         person.doctor = from(personDb.getDoctor());
+
         Collection<PersonDB> patientDbs = personDb.getPatients();
         Collection<Person> patients = new ArrayList<>();
-        for(PersonDB patientDb : personDb.getPatients()){
-            Person patient = from(patientDb);
-            patients.add(patient);
+
+        //Change this
+        if(patientDbs != null) {
+            for (PersonDB patientDb : patientDbs) {
+                Person patient = null;
+                if (persons.get(patientDb.getId()) != null) {
+                    patients = null;
+                    break;
+                } else {
+                    patient = from(patientDb);
+                }
+                patients.add(patient);
+            }
         }
         person.patients = patients;
         return person;
     }
+    private static HashMap<String, Person> persons = new HashMap<>();
 
     public Person(){
 
@@ -163,5 +179,13 @@ public class Person {
 
     public void setPatients(Collection<Person> patients) {
         this.patients = patients;
+    }
+
+    public Person getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Person doctor) {
+        this.doctor = doctor;
     }
 }
