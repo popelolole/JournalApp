@@ -6,7 +6,7 @@ import se.kthraven.journalapp.Model.enums.Severity;
 import java.util.Date;
 
 @Entity
-@Table(name = "T_Condition")
+@Table(name = "t_condition")
 public class ConditionDB {
     @Id
     private String id;
@@ -16,7 +16,9 @@ public class ConditionDB {
 
     @Enumerated(EnumType.STRING)
     private Severity severity;
+    @Column(name = "date_diagnosed")
     private Date dateDiagnosed;
+    @Column(name = "date_recovered")
     private Date dateRecovered;
 
     public ConditionDB(){

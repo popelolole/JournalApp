@@ -3,22 +3,32 @@ package se.kthraven.journalapp.Persistence.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Observation")
+@Table(name = "observation")
 public class ObservationDB {
     @Id
     private String id;
     private String observation;
 
-    @OneToOne
-    @JoinColumn(name = "patientId")
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
     private PersonDB patient;
 
-    @ManyToOne
-    @JoinColumn(name = "encounterId")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "encounter_observation",
+            joinColumns = @JoinColumn(name = "observation_id"),
+            inverseJoinColumns = @JoinColumn(name = "encounter_id")
+    )
     private EncounterDB encounter;
 
     public ObservationDB(){
 
+    }
+
+    public ObservationDB(String string, String s, PersonDB patient) {
+        this.id = id;
+        this.observation = observation;
+        this.patient = patient;
     }
 
     public ObservationDB(String id, String observation, PersonDB patient, EncounterDB encounter) {

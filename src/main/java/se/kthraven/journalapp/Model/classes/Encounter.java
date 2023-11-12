@@ -1,16 +1,40 @@
 package se.kthraven.journalapp.Model.classes;
 
+import se.kthraven.journalapp.Persistence.entities.EncounterDB;
+import se.kthraven.journalapp.Persistence.entities.ObservationDB;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 public class Encounter {
-    private final String id;
-    private final Person patient;
+    private String id;
+    private Person patient;
     private Person doctor;
     private Date date;
     private String location;
     private Collection<Observation> observations = new ArrayList<>();
+
+    public static Encounter from(EncounterDB encounterDb){
+        if(encounterDb == null)
+            return null;
+        Encounter encounter = new Encounter();
+        encounter.id = encounterDb.getId();
+        encounter.patient = Person.from(encounterDb.getPatient());
+        encounter.doctor = Person.from(encounterDb.getDoctor());
+        encounter.date = encounterDb.getDate();
+        encounter.location = encounterDb.getLocation();
+        ArrayList<Observation> observations = new ArrayList<>();
+        for(ObservationDB observationDb : encounterDb.getObservations()){
+            observations.add(Observation.from(observationDb));
+        }
+        encounter.observations = observations;
+        return encounter;
+    }
+
+    public Encounter(){
+
+    }
 
     public Encounter(String id, Person patient, Person doctor, Date date) {
         this.id = id;

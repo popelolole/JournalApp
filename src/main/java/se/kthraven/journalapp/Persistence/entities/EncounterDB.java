@@ -7,22 +7,22 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@Table(name = "Encounter")
+@Table(name = "encounter")
 public class EncounterDB {
     @Id
     private String id;
 
     @OneToOne
-    @JoinColumn(name = "patientId")
+    @JoinColumn(name = "patient_id")
     private PersonDB patient;
 
     @OneToOne
-    @JoinColumn(name = "doctorId")
+    @JoinColumn(name = "doctor_id")
     private PersonDB doctor;
     private Date date;
     private String location;
 
-    @OneToMany
+    @OneToMany(mappedBy = "encounter", fetch = FetchType.EAGER)
     private Collection<ObservationDB> observations = new ArrayList<>();
 
     public EncounterDB(){
@@ -95,5 +95,17 @@ public class EncounterDB {
 
     public void addObservation(ObservationDB observation){
         this.observations.add(observation);
+    }
+
+    @Override
+    public String toString() {
+        return "EncounterDB{" +
+                "id='" + id + '\'' +
+                ", patient=" + patient +
+                ", doctor=" + doctor +
+                ", date=" + date +
+                ", location='" + location + '\'' +
+                ", observations=" + observations +
+                '}';
     }
 }

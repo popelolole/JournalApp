@@ -30,9 +30,14 @@ public class Controller {
         return person;
     }
 
-    @GetMapping("/personEncounters")
+    @GetMapping("/patientEncounters")
     public Collection<Encounter> patientEncounters(@RequestParam(value = "patientId", defaultValue="test") String patientId){
         Collection<Encounter> encounters = journalService.getEncountersByPatient(patientId);
         return encounters;
+    }
+
+    @GetMapping("/seed")
+    public void seed(){
+        se.kthraven.journalapp.Persistence.JournalPersistence.seedData();
     }
 }

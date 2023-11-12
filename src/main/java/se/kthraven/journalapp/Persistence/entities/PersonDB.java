@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@Table(name = "Person")
+@Table(name = "person")
 public class PersonDB {
 
     @Id
@@ -18,6 +18,7 @@ public class PersonDB {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private Date dob;
+    @Column(name="phone_number")
     private String phoneNumber;
     private String email;
 
@@ -25,14 +26,14 @@ public class PersonDB {
     private Role role;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name="conditionId")
+    @JoinColumn(name="condition_id")
     private ConditionDB condition;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Collection<PersonDB> patients;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "doctorId")
+    @JoinColumn(name = "doctor_id")
     private PersonDB doctor;
 
     public PersonDB() {
