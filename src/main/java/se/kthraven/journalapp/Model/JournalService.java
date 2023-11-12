@@ -5,8 +5,10 @@ import org.springframework.stereotype.Component;
 import se.kthraven.journalapp.Model.classes.Encounter;
 import se.kthraven.journalapp.Model.classes.Person;
 import se.kthraven.journalapp.Persistence.IJournalPersistence;
+import se.kthraven.journalapp.Persistence.entities.EncounterDB;
 import se.kthraven.journalapp.Persistence.entities.PersonDB;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Component
@@ -34,7 +36,11 @@ public class JournalService implements IJournalService{
     }
 
     public Collection<Encounter> getEncountersByPatient(String patientId){
-        //
-        return null;
+        Collection<EncounterDB> encounterDbs = persistence.getEncountersByPatient(patientId);
+        ArrayList<Encounter> encounters = new ArrayList<>();
+        for(EncounterDB encounterDb : encounterDbs){
+            encounters.add(Encounter.from(encounterDb));
+        }
+        return encounters;
     }
 }

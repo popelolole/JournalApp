@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.kthraven.journalapp.Model.IJournalService;
+import se.kthraven.journalapp.Model.classes.Encounter;
 import se.kthraven.journalapp.Model.classes.Person;
 
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -22,9 +24,15 @@ public class Controller {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 
-    @GetMapping("/patient")
+    @GetMapping("/person")
     public Person person(@RequestParam(value = "id", defaultValue="test") String id){
         Person person = journalService.getPerson(id);
         return person;
+    }
+
+    @GetMapping("/personEncounters")
+    public Collection<Encounter> patientEncounters(@RequestParam(value = "patientId", defaultValue="test") String patientId){
+        Collection<Encounter> encounters = journalService.getEncountersByPatient(patientId);
+        return encounters;
     }
 }

@@ -37,6 +37,14 @@ public class JournalPersistence implements IJournalPersistence {
 
     @Override
     public Collection<EncounterDB> getEncountersByPatient(String patientId) {
-        return null;
+        EntityManager entityManager = DBManager.getEntityManager();
+
+        Collection<EncounterDB> encounters =
+                entityManager.createQuery("SELECT e FROM EncounterDB e WHERE e.patient.id = :pId", EncounterDB.class)
+                                .setParameter("pId", patientId)
+                                .getResultList();
+
+        entityManager.close();
+        return encounters;
     }
 }
