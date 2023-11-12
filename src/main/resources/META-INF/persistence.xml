@@ -8,7 +8,7 @@ http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://10.11.234.11:3306/JournalDB"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://mysqldb:3306/journaldb"/>
             <property name="javax.persistence.jdbc.user" value="journalapp_user"/>
             <property name="javax.persistence.jdbc.password" value="password"/>
         </properties>

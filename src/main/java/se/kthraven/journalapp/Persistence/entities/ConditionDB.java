@@ -6,11 +6,11 @@ import se.kthraven.journalapp.Model.enums.Severity;
 import java.util.Date;
 
 @Entity
-@Table(name = "´Condition´")
+@Table(name = "T_Condition")
 public class ConditionDB {
     @Id
     private String id;
-    @Column(name = "´condition")
+    @Column(name = "c_condition")
     private String condition;
     private String description;
 
