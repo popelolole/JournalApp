@@ -5,10 +5,17 @@ import org.springframework.context.annotation.Configuration;
 import se.kthraven.journalapp.Model.IJournalService;
 import se.kthraven.journalapp.Model.JournalService;
 import se.kthraven.journalapp.Persistence.IJournalPersistence;
+import se.kthraven.journalapp.Persistence.IUserPersistence;
 import se.kthraven.journalapp.Persistence.JournalPersistence;
+import se.kthraven.journalapp.Persistence.UserPersistence;
 
 @Configuration
 public class AppConfig {
+
+    @Bean
+    public IUserPersistence IUserPersistence(){
+        return new UserPersistence();
+    }
 
     @Bean
     public IJournalPersistence IJournalPersistence(){

@@ -1,13 +1,11 @@
 package se.kthraven.journalapp.Persistence;
 
 import jakarta.persistence.EntityManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import se.kthraven.journalapp.Model.enums.Gender;
 import se.kthraven.journalapp.Model.enums.Role;
 import se.kthraven.journalapp.Model.enums.Severity;
-import se.kthraven.journalapp.Persistence.entities.ConditionDB;
-import se.kthraven.journalapp.Persistence.entities.EncounterDB;
-import se.kthraven.journalapp.Persistence.entities.ObservationDB;
-import se.kthraven.journalapp.Persistence.entities.PersonDB;
+import se.kthraven.journalapp.Persistence.entities.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -84,6 +82,13 @@ public class JournalPersistence implements IJournalPersistence {
                 Severity.EXTREME, new Date(2023, 11, 12));
         patient.setCondition(condition);
 
+
+
+        UserDB user1 = new UserDB(UUID.randomUUID().toString(), "pellebe",
+                new BCryptPasswordEncoder().encode("password"), Role.PATIENT, patient);
+        UserDB user2 = new UserDB(UUID.randomUUID().toString(), "elionbio",
+                new BCryptPasswordEncoder().encode("password"), Role.DOCTOR, doctor);
+
         em.getTransaction().begin();
 
         em.persist(patient);
@@ -91,6 +96,8 @@ public class JournalPersistence implements IJournalPersistence {
         em.persist(encounter);
         em.persist(observation1);
         em.persist(observation2);
+        em.persist(user1);
+        em.persist(user2);
 
         em.getTransaction().commit();
     }
