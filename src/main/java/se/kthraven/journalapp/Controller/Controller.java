@@ -2,10 +2,13 @@ package se.kthraven.journalapp.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.kthraven.journalapp.Model.IJournalService;
+import se.kthraven.journalapp.Model.classes.CustomUserDetails;
 import se.kthraven.journalapp.Model.classes.Encounter;
 import se.kthraven.journalapp.Model.classes.Person;
 
@@ -31,7 +34,6 @@ public class Controller {
         return person;
     }
 
-    @PreAuthorize("hasRole('DOCTOR')")
     @GetMapping("/patientEncounters")
     public Collection<Encounter> patientEncounters(@RequestParam(value = "patientId", defaultValue="test") String patientId){
         Collection<Encounter> encounters = journalService.getEncountersByPatient(patientId);
