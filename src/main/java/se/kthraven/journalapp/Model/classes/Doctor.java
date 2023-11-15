@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class Doctor extends Person{
 
-    Collection<Person> patients;
+    private Collection<Person> patients;
 
     public static Doctor from(PersonDB doctorDb){
         if(doctorDb == null)

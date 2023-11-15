@@ -33,10 +33,12 @@ public class JournalService implements IJournalService{
     public Patient getPatient(String id){
         checkAuthorityDoctorOrSamePatient(id);
         PersonDB patientDb = persistence.getPerson(id);
+
         if(patientDb == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         if(!patientDb.getRole().equals(Role.PATIENT))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
         Patient patient = Patient.from(patientDb);
         return patient;
     }
@@ -110,6 +112,7 @@ public class JournalService implements IJournalService{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         if(!(existingDoctor.getRole().equals(Role.DOCTOR) || existingPatient.getRole().equals(Role.PATIENT)))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
         EncounterDB encounterDb = encounter.toEncounterDB();
         persistence.createEncounter(encounterDb);
     }
