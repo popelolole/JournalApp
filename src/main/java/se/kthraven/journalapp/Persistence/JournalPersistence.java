@@ -13,17 +13,6 @@ import java.sql.Date;
 import java.util.UUID;
 
 public class JournalPersistence implements IJournalPersistence {
-
-    @Override
-    public Collection<PersonDB> getAllPatients() {
-        return null;
-    }
-
-    @Override
-    public Collection<PersonDB> getAllPatientsByDoctor(String doctorId) {
-        return null;
-    }
-
     @Override
     public PersonDB getPerson(String id) {
         EntityManager entityManager = DBManager.getEntityManager();
@@ -32,11 +21,6 @@ public class JournalPersistence implements IJournalPersistence {
 
         entityManager.close();
         return person;
-    }
-
-    @Override
-    public PersonDB getDoctor(String id) {
-        return null;
     }
 
     @Override
@@ -54,6 +38,21 @@ public class JournalPersistence implements IJournalPersistence {
 
         entityManager.close();
         return encounters;
+    }
+
+    @Override
+    public void createPerson(PersonDB person){
+        EntityManager em = DBManager.getEntityManager();
+
+        person.setId(UUID.randomUUID().toString());
+
+        if(person.getCondition() != null)
+            person.getCondition().setId(UUID.randomUUID().toString());
+
+        em.getTransaction().begin();
+        em.persist(person);
+        em.getTransaction().commit();
+        em.close();
     }
 
     public static void seedData(){

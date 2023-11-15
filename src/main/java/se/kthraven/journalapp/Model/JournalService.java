@@ -1,6 +1,8 @@
 package se.kthraven.journalapp.Model;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import se.kthraven.journalapp.Model.classes.Encounter;
@@ -32,8 +34,16 @@ public class JournalService implements IJournalService{
         return person;
     }
 
-    public void createPatient(Person patient){
-        //
+    public void createPerson(Person person) {
+        checkAuthorityDoctorOrOther();
+        if(person.getDoctor() != null) {
+            PersonDB existingDoctor = persistence.getPerson(person.getDoctor().getId());
+            if(existingDoctor == null)
+                throw new EntityNotFoundException("Referred doctor not found");
+                //TODO: implement exception to throw http status code
+        }
+        PersonDB personDb = person.toPersonDB();
+        persistence.createPerson(personDb);
     }
 
     public void updatePatient(Person patient){
@@ -53,6 +63,12 @@ public class JournalService implements IJournalService{
     private void checkAuthorityDoctorOrSamePatient(String patientId){
         Person loggedIn = getCurrentUserPerson();
         if(!loggedIn.getRole().equals(Role.DOCTOR) && !loggedIn.getId().equals(patientId))
-            throw new AccessDeniedException("No authority to access data");
+            throw new AccessDeniedException("No authority to access patient data");
+    }
+
+    private void checkAuthorityDoctorOrOther(){
+        Person loggedIn = getCurrentUserPerson();
+        if(!(loggedIn.getRole().equals(Role.DOCTOR) || loggedIn.getRole().equals(Role.OTHER)))
+            throw new AccessDeniedException("No authority to create person data");
     }
 }

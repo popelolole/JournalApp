@@ -1,12 +1,12 @@
 package se.kthraven.journalapp.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.kthraven.journalapp.Model.IJournalService;
 import se.kthraven.journalapp.Model.classes.CustomUserDetails;
 import se.kthraven.journalapp.Model.classes.Encounter;
@@ -34,10 +34,17 @@ public class Controller {
         return person;
     }
 
-    @GetMapping("/patientEncounters")
+    @GetMapping("/patient-encounters")
     public Collection<Encounter> patientEncounters(@RequestParam(value = "patientId", defaultValue="test") String patientId){
         Collection<Encounter> encounters = journalService.getEncountersByPatient(patientId);
         return encounters;
+    }
+
+    @PreAuthorize("hasRole('ROLE_DOCTOR') or hasRole('ROLE_OTHER')")
+    @PostMapping("/person")
+    public ResponseEntity<String> createPerson(@RequestBody Person person){
+        journalService.createPerson(person);
+        return new ResponseEntity<>("Person created successfully", HttpStatus.CREATED);
     }
 
     @GetMapping("/seed")

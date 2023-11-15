@@ -29,10 +29,10 @@ public class PersonDB {
     @JoinColumn(name="condition_id")
     private ConditionDB condition;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Collection<PersonDB> patients;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id")
     private PersonDB doctor;
 

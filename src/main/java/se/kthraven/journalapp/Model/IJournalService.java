@@ -8,7 +8,7 @@ import java.util.Collection;
 public interface IJournalService {
     Collection<Person> getAllPatients();
     Person getPerson(String id);
-    void createPatient(Person patient);
+    void createPerson(Person person);
     void updatePatient(Person patient);
     Collection<Encounter> getEncountersByPatient(String patientId);
 }

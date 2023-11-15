@@ -26,6 +26,16 @@ public class Condition {
         return condition;
     }
 
+    public ConditionDB toConditionDB() {
+        ConditionDB conditionDb = new ConditionDB(this.id,
+                this.condition,
+                this.description,
+                this.severity,
+                this.dateDiagnosed,
+                this.dateRecovered);
+        return conditionDb;
+    }
+
     public Condition(){
 
     }
@@ -89,4 +99,5 @@ public class Condition {
     public void setDateRecovered(Date dateRecovered) {
         this.dateRecovered = dateRecovered;
     }
+
 }

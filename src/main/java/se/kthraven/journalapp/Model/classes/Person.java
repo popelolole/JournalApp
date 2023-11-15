@@ -57,6 +57,27 @@ public class Person {
         person.patients = patients;
         return person;
     }
+
+    public PersonDB toPersonDB(){
+        PersonDB personDb = new PersonDB(this.id,
+                this.name,
+                this.gender,
+                this.dob,
+                this.phoneNumber,
+                this.email,
+                this.role,
+                null,
+                null,
+                null);
+
+        if(this.condition != null)
+            personDb.setCondition(this.condition.toConditionDB());
+        if(this.doctor != null)
+            personDb.setDoctor(this.doctor.toPersonDB());
+
+        return personDb;
+    }
+
     private static HashMap<String, Person> persons = new HashMap<>();
 
     public Person(){

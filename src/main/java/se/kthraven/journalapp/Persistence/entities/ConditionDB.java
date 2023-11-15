@@ -53,6 +53,10 @@ public class ConditionDB {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getCondition() {
         return condition;
     }
