@@ -34,6 +34,8 @@ public class JournalService implements IJournalService{
     public Patient getPatient(String id){
         checkAuthorityDoctorOrSamePatient(id);
         PersonDB patientDb = persistence.getPerson(id);
+        if(patientDb == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         if(!patientDb.getRole().equals(Role.PATIENT))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         Patient patient = Patient.from(patientDb);
@@ -43,6 +45,8 @@ public class JournalService implements IJournalService{
     public Doctor getDoctor(String id){
         checkAuthorityDoctorOrOther();
         PersonDB doctorDb = persistence.getPerson(id);
+        if(doctorDb == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         if(!doctorDb.getRole().equals(Role.DOCTOR))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         Doctor doctor = Doctor.from(doctorDb);
@@ -76,6 +80,8 @@ public class JournalService implements IJournalService{
     public Collection<Encounter> getEncountersByPatient(String patientId){
         checkAuthorityDoctorOrSamePatient(patientId);
         Collection<EncounterDB> encounterDbs = persistence.getEncountersByPatient(patientId);
+        if(encounterDbs.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         ArrayList<Encounter> encounters = new ArrayList<>();
         for(EncounterDB encounterDb : encounterDbs){
             encounters.add(Encounter.from(encounterDb));

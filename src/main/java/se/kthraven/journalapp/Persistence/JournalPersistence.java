@@ -32,10 +32,6 @@ public class JournalPersistence implements IJournalPersistence {
                                 .setParameter("pId", patientId)
                                 .getResultList();
 
-        for(EncounterDB encounter : encounters){
-            System.out.println(encounter.toString());
-        }
-
         entityManager.close();
         return encounters;
     }
