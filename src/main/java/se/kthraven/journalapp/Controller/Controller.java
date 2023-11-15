@@ -27,7 +27,7 @@ public class Controller {
     }
 
     @GetMapping("/patient")
-    public Patient patient(@RequestParam(value = "id", defaultValue="test") String id){
+    public Patient getPatient(@RequestParam(value = "id", defaultValue="test") String id){
         Patient patient = journalService.getPatient(id);
         return patient;
     }
@@ -41,12 +41,12 @@ public class Controller {
 
     @PreAuthorize("hasRole('ROLE_DOCTOR') or hasRole('ROLE_OTHER')")
     @GetMapping("/doctor")
-    public Doctor doctor(@RequestParam(value = "id", defaultValue="test") String id){
+    public Doctor getDoctor(@RequestParam(value = "id", defaultValue="test") String id){
         Doctor doctor = journalService.getDoctor(id);
         return doctor;
     }
 
-    @GetMapping("/patient-encounters")
+    @GetMapping("/patient/encounters")
     public Collection<Encounter> patientEncounters(@RequestParam(value = "patientId", defaultValue="test") String patientId){
         Collection<Encounter> encounters = journalService.getEncountersByPatient(patientId);
         return encounters;
