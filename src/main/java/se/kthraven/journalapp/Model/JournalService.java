@@ -31,6 +31,7 @@ public class JournalService implements IJournalService{
         return null;
     }
 
+    @Override
     public Patient getPatient(String id){
         checkAuthorityDoctorOrSamePatient(id);
         PersonDB patientDb = persistence.getPerson(id);
@@ -42,6 +43,7 @@ public class JournalService implements IJournalService{
         return patient;
     }
 
+    @Override
     public Doctor getDoctor(String id){
         checkAuthorityDoctorOrOther();
         PersonDB doctorDb = persistence.getPerson(id);
@@ -53,6 +55,7 @@ public class JournalService implements IJournalService{
         return doctor;
     }
 
+    @Override
     public void createPatient(Patient patient) {
         checkAuthorityDoctorOrOther();
 
@@ -77,6 +80,7 @@ public class JournalService implements IJournalService{
         //
     }
 
+    @Override
     public Collection<Encounter> getEncountersByPatient(String patientId){
         checkAuthorityDoctorOrSamePatient(patientId);
         Collection<EncounterDB> encounterDbs = persistence.getEncountersByPatient(patientId);
@@ -87,6 +91,29 @@ public class JournalService implements IJournalService{
             encounters.add(Encounter.from(encounterDb));
         }
         return encounters;
+    }
+
+    @Override
+    public Encounter getEncounter(String id){
+        EncounterDB encounterDb = persistence.getEncounter(id);
+        if(encounterDb == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return Encounter.from(encounterDb);
+    }
+
+    @Override
+    public void createEncounter(Encounter encounter) {
+        if(encounter == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        PersonDB existingDoctor = persistence.getPerson(encounter.getDoctor().getId());
+        PersonDB existingPatient = persistence.getPerson(encounter.getPatient().getId());
+        if(existingDoctor == null || existingPatient == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if(!(existingDoctor.getRole().equals(Role.DOCTOR) || existingPatient.getRole().equals(Role.PATIENT)))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        EncounterDB encounterDb = encounter.toEncounterDB();
+        persistence.createEncounter(encounterDb);
     }
 
     private void checkAuthorityDoctorOrSamePatient(String patientId){

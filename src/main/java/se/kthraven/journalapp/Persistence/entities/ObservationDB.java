@@ -42,6 +42,10 @@ public class ObservationDB {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getObservation() {
         return observation;
     }

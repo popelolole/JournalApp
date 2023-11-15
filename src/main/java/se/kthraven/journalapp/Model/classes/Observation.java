@@ -1,6 +1,10 @@
 package se.kthraven.journalapp.Model.classes;
 
+import se.kthraven.journalapp.Persistence.entities.EncounterDB;
 import se.kthraven.journalapp.Persistence.entities.ObservationDB;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Observation {
     private String id;
@@ -15,6 +19,13 @@ public class Observation {
         observation.observation = observationDb.getObservation();
         observation.patient = Person.from(observationDb.getPatient());
         return observation;
+    }
+
+    public ObservationDB toObservationDB(){
+        ObservationDB observationDb = new ObservationDB(this.id,
+                this.observation,
+                this.patient.toPersonDB());
+        return observationDb;
     }
 
     public Observation(){

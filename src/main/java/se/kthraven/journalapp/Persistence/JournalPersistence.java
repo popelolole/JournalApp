@@ -51,6 +51,34 @@ public class JournalPersistence implements IJournalPersistence {
         em.close();
     }
 
+    @Override
+    public EncounterDB getEncounter(String id) {
+        EntityManager em = DBManager.getEntityManager();
+
+        EncounterDB encounter = em.find(EncounterDB.class, id);
+
+        em.close();
+        return encounter;
+    }
+
+    @Override
+    public void createEncounter(EncounterDB encounter) {
+        EntityManager em = DBManager.getEntityManager();
+
+        encounter.setId(UUID.randomUUID().toString());
+
+        if(!encounter.getObservations().isEmpty()) {
+            for(ObservationDB observation : encounter.getObservations()){
+                observation.setId(UUID.randomUUID().toString());
+            }
+        }
+
+        em.getTransaction().begin();
+        em.persist(encounter);
+        em.getTransaction().commit();
+        em.close();
+    }
+
     public static void seedData(){
         EntityManager em = DBManager.getEntityManager();
 

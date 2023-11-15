@@ -14,4 +14,6 @@ public interface IJournalService {
     void createPatient(Patient patient);
     void updatePatient(Person patient);
     Collection<Encounter> getEncountersByPatient(String patientId);
+    Encounter getEncounter(String id);
+    void createEncounter(Encounter encounter);
 }

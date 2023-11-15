@@ -9,4 +9,6 @@ public interface IJournalPersistence {
      PersonDB getPerson(String id);
      void createPerson(PersonDB person);
      Collection<EncounterDB> getEncountersByPatient(String patientId);
+     EncounterDB getEncounter(String id);
+     void createEncounter(EncounterDB encounter);
 }

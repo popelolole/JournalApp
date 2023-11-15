@@ -12,11 +12,11 @@ public class EncounterDB {
     @Id
     private String id;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "patient_id")
     private PersonDB patient;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "doctor_id")
     private PersonDB doctor;
     private Date date;
@@ -55,6 +55,10 @@ public class EncounterDB {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public PersonDB getPatient() {

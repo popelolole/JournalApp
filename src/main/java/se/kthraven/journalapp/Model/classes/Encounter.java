@@ -32,6 +32,22 @@ public class Encounter {
         return encounter;
     }
 
+    public EncounterDB toEncounterDB(){
+        EncounterDB encounterDb = new EncounterDB(this.id,
+                this.patient.toPersonDB(),
+                this.doctor.toPersonDB(),
+                this.date,
+                this.location,
+                new ArrayList<>());
+        Collection<ObservationDB> observations = new ArrayList<>();
+        if(!this.observations.isEmpty()){
+            for(Observation observation : this.observations){
+                observations.add(observation.toObservationDB());
+            }
+        }
+        return encounterDb;
+    }
+
     public Encounter(){
 
     }

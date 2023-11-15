@@ -27,7 +27,7 @@ public class Controller {
     }
 
     @GetMapping("/patient")
-    public Patient getPatient(@RequestParam(value = "id", defaultValue="test") String id){
+    public Patient getPatient(@RequestParam(value = "id") String id){
         Patient patient = journalService.getPatient(id);
         return patient;
     }
@@ -41,15 +41,28 @@ public class Controller {
 
     @PreAuthorize("hasRole('ROLE_DOCTOR') or hasRole('ROLE_OTHER')")
     @GetMapping("/doctor")
-    public Doctor getDoctor(@RequestParam(value = "id", defaultValue="test") String id){
+    public Doctor getDoctor(@RequestParam(value = "id") String id){
         Doctor doctor = journalService.getDoctor(id);
         return doctor;
     }
 
     @GetMapping("/patient/encounters")
-    public Collection<Encounter> patientEncounters(@RequestParam(value = "patientId", defaultValue="test") String patientId){
+    public Collection<Encounter> patientEncounters(@RequestParam(value = "patientId") String patientId){
         Collection<Encounter> encounters = journalService.getEncountersByPatient(patientId);
         return encounters;
+    }
+
+    @GetMapping("/encounter")
+    public Encounter getEncounter(@RequestParam(value = "id") String id){
+        Encounter encounter = journalService.getEncounter(id);
+        return encounter;
+    }
+
+    @PreAuthorize("hasRole('ROLE_DOCTOR') or hasRole('ROLE_OTHER')")
+    @PostMapping("/encounter")
+    public ResponseEntity<String> createEncounter(@RequestBody Encounter encounter){
+        journalService.createEncounter(encounter);
+        return new ResponseEntity<>("Encounter created successfully", HttpStatus.CREATED);
     }
 
     @GetMapping("/seed")
