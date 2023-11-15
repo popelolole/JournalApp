@@ -8,9 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import se.kthraven.journalapp.Model.IJournalService;
-import se.kthraven.journalapp.Model.classes.CustomUserDetails;
-import se.kthraven.journalapp.Model.classes.Encounter;
-import se.kthraven.journalapp.Model.classes.Person;
+import se.kthraven.journalapp.Model.classes.*;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicLong;
@@ -28,23 +26,29 @@ public class Controller {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 
-    @GetMapping("/person")
-    public Person person(@RequestParam(value = "id", defaultValue="test") String id){
-        Person person = journalService.getPerson(id);
-        return person;
+    @GetMapping("/patient")
+    public Patient patient(@RequestParam(value = "id", defaultValue="test") String id){
+        Patient patient = journalService.getPatient(id);
+        return patient;
+    }
+
+    @PreAuthorize("hasRole('ROLE_DOCTOR') or hasRole('ROLE_OTHER')")
+    @PostMapping("/patient")
+    public ResponseEntity<String> createPatient(@RequestBody Patient patient){
+        journalService.createPatient(patient);
+        return new ResponseEntity<>("Person created successfully", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/doctor")
+    public Doctor doctor(@RequestParam(value = "id", defaultValue="test") String id){
+        Doctor doctor = journalService.getDoctor(id);
+        return doctor;
     }
 
     @GetMapping("/patient-encounters")
     public Collection<Encounter> patientEncounters(@RequestParam(value = "patientId", defaultValue="test") String patientId){
         Collection<Encounter> encounters = journalService.getEncountersByPatient(patientId);
         return encounters;
-    }
-
-    @PreAuthorize("hasRole('ROLE_DOCTOR') or hasRole('ROLE_OTHER')")
-    @PostMapping("/person")
-    public ResponseEntity<String> createPerson(@RequestBody Person person){
-        journalService.createPerson(person);
-        return new ResponseEntity<>("Person created successfully", HttpStatus.CREATED);
     }
 
     @GetMapping("/seed")

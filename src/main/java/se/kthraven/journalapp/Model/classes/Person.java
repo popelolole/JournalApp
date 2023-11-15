@@ -17,44 +17,17 @@ public class Person {
     private String phoneNumber;
     private String email;
     private Role role;
-    private Condition condition;
-    private Collection<Person> patients;
-    private Person doctor;
 
     public static Person from(PersonDB personDb){
         if(personDb == null)
             return null;
-        Person person = new Person();
-        person.id = personDb.getId();
-        person.name = personDb.getName();
-        person.gender = personDb.getGender();
-        person.dob = personDb.getDob();
-        person.phoneNumber = personDb.getPhoneNumber();
-        person.email = personDb.getEmail();
-        person.role = personDb.getRole();
-        person.condition = Condition.from(personDb.getCondition());
-
-        persons.put(person.id, person);
-
-        person.doctor = from(personDb.getDoctor());
-
-        Collection<PersonDB> patientDbs = personDb.getPatients();
-        Collection<Person> patients = new ArrayList<>();
-
-        //Change this
-        if(patientDbs != null) {
-            for (PersonDB patientDb : patientDbs) {
-                Person patient = null;
-                if (persons.get(patientDb.getId()) != null) {
-                    patients = null;
-                    break;
-                } else {
-                    patient = from(patientDb);
-                }
-                patients.add(patient);
-            }
-        }
-        person.patients = patients;
+        Person person = new Person(personDb.getId(),
+                personDb.getName(),
+                personDb.getGender(),
+                personDb.getDob(),
+                personDb.getPhoneNumber(),
+                personDb.getEmail(),
+                personDb.getRole());
         return person;
     }
 
@@ -70,26 +43,7 @@ public class Person {
                 null,
                 null);
 
-        if(this.condition != null)
-            personDb.setCondition(this.condition.toConditionDB());
-        if(this.doctor != null)
-            personDb.setDoctor(this.doctor.toPersonDB());
-
         return personDb;
-    }
-
-    private static HashMap<String, Person> persons = new HashMap<>();
-
-    public Person(){
-
-    }
-
-    public Person(String id, String name, Gender gender, Date dob, Role role) {
-        this.id = id;
-        this.name = name;
-        this.gender = gender;
-        this.dob = dob;
-        this.role = role;
     }
 
     public Person(String id, String name, Gender gender, Date dob, String phoneNumber, String email, Role role) {
@@ -102,44 +56,12 @@ public class Person {
         this.role = role;
     }
 
-    public Person(String id, String name, Gender gender, Date dob, String phoneNumber, String email, Role role, Condition condition, Person doctor) {
-        this.id = id;
-        this.name = name;
-        this.gender = gender;
-        this.dob = dob;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.role = role;
-        this.condition = condition;
-        this.doctor = doctor;
-    }
-
-    public Person(String id, String name, Gender gender, Date dob, String phoneNumber, String email, Role role, Collection<Person> patients) {
-        this.id = id;
-        this.name = name;
-        this.gender = gender;
-        this.dob = dob;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.role = role;
-        this.patients = patients;
-    }
-
-    public Person(String id, String name, Gender gender, Date dob, String phoneNumber, String email, Role role, Condition condition, Collection<Person> patients, Person doctor) {
-        this.id = id;
-        this.name = name;
-        this.gender = gender;
-        this.dob = dob;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.role = role;
-        this.condition = condition;
-        this.patients = patients;
-        this.doctor = doctor;
-    }
-
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -152,6 +74,10 @@ public class Person {
 
     public Gender getGender() {
         return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public Date getDob() {
@@ -184,29 +110,5 @@ public class Person {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public Condition getCondition() {
-        return condition;
-    }
-
-    public void setCondition(Condition condition) {
-        this.condition = condition;
-    }
-
-    public Collection<Person> getPatients() {
-        return patients;
-    }
-
-    public void setPatients(Collection<Person> patients) {
-        this.patients = patients;
-    }
-
-    public Person getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Person doctor) {
-        this.doctor = doctor;
     }
 }

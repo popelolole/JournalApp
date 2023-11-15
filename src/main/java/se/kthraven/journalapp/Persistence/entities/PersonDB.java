@@ -1,5 +1,7 @@
 package se.kthraven.journalapp.Persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import se.kthraven.journalapp.Model.enums.Gender;
 import se.kthraven.journalapp.Model.enums.Role;
@@ -171,5 +173,27 @@ public class PersonDB {
 
     public void setDoctor(PersonDB doctor) {
         this.doctor = doctor;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder info = new StringBuilder("PersonDB{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", gender=" + gender +
+                ", dob=" + dob +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", condition=" + condition +
+                ", patients=" + "{");
+        if(patients != null) {
+            for (PersonDB patient : patients){
+                info.append(patient.toString()).append(", ");
+            }
+        }
+        info.append("}, doctor=").append(doctor);
+
+        return info.toString();
     }
 }

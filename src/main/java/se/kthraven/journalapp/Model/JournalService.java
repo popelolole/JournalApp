@@ -3,9 +3,13 @@ package se.kthraven.journalapp.Model;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
+import se.kthraven.journalapp.Model.classes.Doctor;
 import se.kthraven.journalapp.Model.classes.Encounter;
+import se.kthraven.journalapp.Model.classes.Patient;
 import se.kthraven.journalapp.Model.classes.Person;
 import se.kthraven.journalapp.Model.enums.Role;
 import se.kthraven.journalapp.Persistence.IJournalPersistence;
@@ -27,22 +31,41 @@ public class JournalService implements IJournalService{
         return null;
     }
 
-    public Person getPerson(String id){
+    public Patient getPatient(String id){
         checkAuthorityDoctorOrSamePatient(id);
-        PersonDB personDb = persistence.getPerson(id);
-        Person person = Person.from(personDb);
-        return person;
+        PersonDB patientDb = persistence.getPerson(id);
+        if(!patientDb.getRole().equals(Role.PATIENT))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        Patient patient = Patient.from(patientDb);
+        return patient;
     }
 
-    public void createPerson(Person person) {
+    public Doctor getDoctor(String id){
         checkAuthorityDoctorOrOther();
-        if(person.getDoctor() != null) {
-            PersonDB existingDoctor = persistence.getPerson(person.getDoctor().getId());
+        PersonDB doctorDb = persistence.getPerson(id);
+        if(!doctorDb.getRole().equals(Role.DOCTOR))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        Doctor doctor = Doctor.from(doctorDb);
+        return doctor;
+    }
+
+    public void createPatient(Patient patient) {
+        checkAuthorityDoctorOrOther();
+
+        if(!patient.getRole().equals(Role.PATIENT))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        if(patient.getDoctor() != null) {
+            PersonDB existingDoctor = persistence.getPerson(patient.getDoctor().getId());
+
             if(existingDoctor == null)
-                throw new EntityNotFoundException("Referred doctor not found");
-                //TODO: implement exception to throw http status code
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+            if(!existingDoctor.getRole().equals(Role.DOCTOR))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        PersonDB personDb = person.toPersonDB();
+
+        PersonDB personDb = patient.toPersonDB();
         persistence.createPerson(personDb);
     }
 
