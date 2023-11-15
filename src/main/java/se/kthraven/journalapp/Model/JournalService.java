@@ -7,13 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
-import se.kthraven.journalapp.Model.classes.Doctor;
-import se.kthraven.journalapp.Model.classes.Encounter;
-import se.kthraven.journalapp.Model.classes.Patient;
-import se.kthraven.journalapp.Model.classes.Person;
+import se.kthraven.journalapp.Model.classes.*;
 import se.kthraven.journalapp.Model.enums.Role;
 import se.kthraven.journalapp.Persistence.IJournalPersistence;
 import se.kthraven.journalapp.Persistence.entities.EncounterDB;
+import se.kthraven.journalapp.Persistence.entities.ObservationDB;
 import se.kthraven.journalapp.Persistence.entities.PersonDB;
 
 import java.util.ArrayList;
@@ -115,6 +113,21 @@ public class JournalService implements IJournalService{
         EncounterDB encounterDb = encounter.toEncounterDB();
         persistence.createEncounter(encounterDb);
     }
+
+    @Override
+    public void createObservation(Observation observation, String encounterId) {
+        if(observation == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        EncounterDB encounterDb = persistence.getEncounter(encounterId);
+        if(encounterDb == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        ObservationDB observationDb = observation.toObservationDB();
+        observationDb.setEncounter(encounterDb);
+        persistence.createObservation(observationDb);
+    }
+
 
     private void checkAuthorityDoctorOrSamePatient(String patientId){
         Person loggedIn = getCurrentUserPerson();

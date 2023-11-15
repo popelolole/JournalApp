@@ -65,6 +65,13 @@ public class Controller {
         return new ResponseEntity<>("Encounter created successfully", HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ROLE_DOCTOR') or hasRole('ROLE_OTHER')")
+    @PostMapping("/encounter/observation")
+    public ResponseEntity<String> createObservation(@RequestBody Observation observation, @RequestParam(value = "encounterId") String encounterId){
+        journalService.createObservation(observation, encounterId);
+        return new ResponseEntity<>("Encounter created successfully", HttpStatus.CREATED);
+    }
+
     @GetMapping("/seed")
     public void seed(){
         se.kthraven.journalapp.Persistence.JournalPersistence.seedData();

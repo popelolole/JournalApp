@@ -1,9 +1,6 @@
 package se.kthraven.journalapp.Model;
 
-import se.kthraven.journalapp.Model.classes.Doctor;
-import se.kthraven.journalapp.Model.classes.Encounter;
-import se.kthraven.journalapp.Model.classes.Patient;
-import se.kthraven.journalapp.Model.classes.Person;
+import se.kthraven.journalapp.Model.classes.*;
 
 import java.util.Collection;
 
@@ -16,4 +13,5 @@ public interface IJournalService {
     Collection<Encounter> getEncountersByPatient(String patientId);
     Encounter getEncounter(String id);
     void createEncounter(Encounter encounter);
+    void createObservation(Observation observation, String encounterId);
 }

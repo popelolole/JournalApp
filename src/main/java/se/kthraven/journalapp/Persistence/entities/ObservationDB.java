@@ -25,7 +25,7 @@ public class ObservationDB {
 
     }
 
-    public ObservationDB(String string, String s, PersonDB patient) {
+    public ObservationDB(String id, String observation, PersonDB patient) {
         this.id = id;
         this.observation = observation;
         this.patient = patient;
@@ -60,5 +60,9 @@ public class ObservationDB {
 
     public EncounterDB getEncounter() {
         return encounter;
+    }
+
+    public void setEncounter(EncounterDB encounter) {
+        this.encounter = encounter;
     }
 }

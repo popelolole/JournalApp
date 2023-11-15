@@ -79,6 +79,18 @@ public class JournalPersistence implements IJournalPersistence {
         em.close();
     }
 
+    @Override
+    public void createObservation(ObservationDB observation) {
+        EntityManager em = DBManager.getEntityManager();
+
+        observation.setId(UUID.randomUUID().toString());
+
+        em.getTransaction().begin();
+        em.persist(observation);
+        em.getTransaction().commit();
+        em.close();
+    }
+
     public static void seedData(){
         EntityManager em = DBManager.getEntityManager();
 
