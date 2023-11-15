@@ -39,6 +39,7 @@ public class Controller {
         return new ResponseEntity<>("Person created successfully", HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ROLE_DOCTOR') or hasRole('ROLE_OTHER')")
     @GetMapping("/doctor")
     public Doctor doctor(@RequestParam(value = "id", defaultValue="test") String id){
         Doctor doctor = journalService.getDoctor(id);
