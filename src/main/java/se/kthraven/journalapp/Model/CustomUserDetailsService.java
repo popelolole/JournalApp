@@ -1,5 +1,6 @@
 package se.kthraven.journalapp.Model;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,6 +31,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().toString()));
         return new CustomUserDetails(user.getUsername(), user.getPassword(), true, authorities, Person.from(user.getPerson()));
+    }
+
+    public UserDetails login(String username, String password){
+        UserDetails user = loadUserByUsername(username);
+        if(user.getPassword().equals(password))
+            return user;
+        else
+            throw new EntityNotFoundException("Invalid login information.");
     }
 
     public static Person getCurrentUserPerson(){

@@ -8,6 +8,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import se.kthraven.journalapp.Model.CustomUserDetailsService;
@@ -29,14 +30,9 @@ public class Controller {
     private CustomUserDetailsService userService;
 
     @GetMapping("/login")
-    public ResponseEntity<CustomUserDetails> login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
-        CustomUserDetails user = (CustomUserDetails) userService.loadUserByUsername(username);
-        if(user.getPassword().equals(password)){
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
-        else{
-            throw new EntityNotFoundException("Invalid login information");
-        }
+    public ResponseEntity<UserDetails> login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
+        UserDetails user = userService.loadUserByUsername(username);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/greeting")
