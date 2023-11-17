@@ -2,6 +2,8 @@ package se.kthraven.journalapp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import se.kthraven.journalapp.Model.CustomUserDetailsService;
 import se.kthraven.journalapp.Model.IJournalService;
 import se.kthraven.journalapp.Model.JournalService;
 import se.kthraven.journalapp.Persistence.IJournalPersistence;

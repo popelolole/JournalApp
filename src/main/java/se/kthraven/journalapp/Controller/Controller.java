@@ -1,12 +1,16 @@
 package se.kthraven.journalapp.Controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+import se.kthraven.journalapp.Model.CustomUserDetailsService;
 import se.kthraven.journalapp.Model.IJournalService;
 import se.kthraven.journalapp.Model.classes.*;
 
@@ -20,6 +24,20 @@ public class Controller {
 
     @Autowired
     private IJournalService journalService;
+
+    @Autowired
+    private CustomUserDetailsService userService;
+
+    @GetMapping("/login")
+    public ResponseEntity<CustomUserDetails> login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
+        CustomUserDetails user = (CustomUserDetails) userService.loadUserByUsername(username);
+        if(user.getPassword().equals(password)){
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        else{
+            throw new EntityNotFoundException("Invalid login information");
+        }
+    }
 
     @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {

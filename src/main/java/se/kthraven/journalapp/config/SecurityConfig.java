@@ -33,6 +33,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(basic -> basic.init(http))
                 .csrf(csrf -> csrf.disable())
