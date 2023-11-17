@@ -1,7 +1,12 @@
 package se.kthraven.journalapp.Persistence;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import se.kthraven.journalapp.Model.enums.Gender;
 import se.kthraven.journalapp.Model.enums.Role;
 import se.kthraven.journalapp.Model.enums.Severity;
@@ -12,6 +17,7 @@ import java.util.Collection;
 import java.sql.Date;
 import java.util.UUID;
 
+@Component
 public class JournalPersistence implements IJournalPersistence {
     @Override
     public PersonDB getPerson(String id) {
@@ -91,6 +97,9 @@ public class JournalPersistence implements IJournalPersistence {
         em.close();
     }
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     public static void seedData(){
         EntityManager em = DBManager.getEntityManager();
 
@@ -117,13 +126,6 @@ public class JournalPersistence implements IJournalPersistence {
                 Severity.EXTREME, new Date(2023, 11, 12));
         patient.setCondition(condition);
 
-
-
-        UserDB user1 = new UserDB(UUID.randomUUID().toString(), "pellebe",
-                new BCryptPasswordEncoder().encode("password"), Role.PATIENT, patient);
-        UserDB user2 = new UserDB(UUID.randomUUID().toString(), "elionbio",
-                new BCryptPasswordEncoder().encode("password"), Role.DOCTOR, doctor);
-
         em.getTransaction().begin();
 
         em.persist(patient);
@@ -131,10 +133,23 @@ public class JournalPersistence implements IJournalPersistence {
         em.persist(encounter);
         em.persist(observation1);
         em.persist(observation2);
-        em.persist(user1);
-        em.persist(user2);
 
         em.getTransaction().commit();
+
+        em.close();
+    }
+
+    public void seedUsers(){
+        EntityManager em = DBManager.getEntityManager();
+        em.getTransaction().begin();
+        UserDB user1 = new UserDB(UUID.randomUUID().toString(), "pellebe",
+                passwordEncoder.encode("password"), Role.PATIENT, getPerson("7fa390c3-f5bf-4911-a481-48aab6d5292b"));
+        UserDB user2 = new UserDB(UUID.randomUUID().toString(), "elionbio",
+                passwordEncoder.encode("password"), Role.DOCTOR, getPerson("593f2b6f-b595-44d7-a579-43f847526593"));
+        em.persist(user1);
+        em.persist(user2);
+        em.getTransaction().commit();
+        em.close();
     }
 
     public static void main(String[] args){

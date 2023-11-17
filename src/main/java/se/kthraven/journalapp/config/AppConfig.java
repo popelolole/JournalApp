@@ -2,6 +2,7 @@ package se.kthraven.journalapp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import se.kthraven.journalapp.Model.CustomUserDetailsService;
 import se.kthraven.journalapp.Model.IJournalService;
@@ -19,6 +20,7 @@ public class AppConfig {
         return new UserPersistence();
     }
 
+    @Primary
     @Bean
     public IJournalPersistence IJournalPersistence(){
         return new JournalPersistence();

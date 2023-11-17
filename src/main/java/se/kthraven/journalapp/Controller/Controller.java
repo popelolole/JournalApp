@@ -31,8 +31,13 @@ public class Controller {
 
     @GetMapping("/login")
     public ResponseEntity<UserDetails> login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
-        UserDetails user = userService.loadUserByUsername(username);
+        UserDetails user = userService.login(username, password);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/seedUsers")
+    public void login() {
+        journalService.createUsers();
     }
 
     @GetMapping("/greeting")

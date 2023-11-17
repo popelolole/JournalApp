@@ -8,6 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.kthraven.journalapp.Model.classes.CustomUserDetails;
 import se.kthraven.journalapp.Model.classes.Person;
@@ -23,6 +25,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     IUserPersistence userPersistence;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDB user = userPersistence.getUserByUsername(username);
@@ -35,7 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public UserDetails login(String username, String password){
         UserDetails user = loadUserByUsername(username);
-        if(user.getPassword().equals(password))
+        if(passwordEncoder.matches(password, user.getPassword()))
             return user;
         else
             throw new EntityNotFoundException("Invalid login information.");

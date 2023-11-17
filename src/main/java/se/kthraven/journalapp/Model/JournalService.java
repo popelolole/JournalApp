@@ -143,4 +143,9 @@ public class JournalService implements IJournalService{
         if(!(loggedIn.getRole().equals(Role.DOCTOR) || loggedIn.getRole().equals(Role.OTHER)))
             throw new AccessDeniedException("No authority to create person data");
     }
+
+    //TEST METHOD
+    public void createUsers(){
+        persistence.seedUsers();
+    }
 }
