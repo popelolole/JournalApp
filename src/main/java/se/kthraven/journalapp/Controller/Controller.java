@@ -36,7 +36,7 @@ public class Controller {
     }
 
     @GetMapping("/seedUsers")
-    public void login() {
+    public void seedUsers() {
         journalService.createUsers();
     }
 
