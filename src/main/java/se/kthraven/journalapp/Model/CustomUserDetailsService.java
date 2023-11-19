@@ -39,9 +39,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public UserDetails login(String username, String password){
-        UserDetails user = loadUserByUsername(username);
-        if(passwordEncoder.matches(password, user.getPassword()))
+        CustomUserDetails user = (CustomUserDetails) loadUserByUsername(username);
+        if(passwordEncoder.matches(password, user.getPassword())) {
+            user.setPassword(password); //to use non-encoded password
             return user;
+        }
         else
             throw new EntityNotFoundException("Invalid login information.");
     }
