@@ -33,8 +33,7 @@ public class MessageService implements IMessageService{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserId = ((CustomUserDetails) authentication.getPrincipal()).getId();
         if(!(currentUserId.equals(userId1) || currentUserId.equals(userId2)))
-            throw new AccessDeniedException("No authority to access conversation");
-
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         Collection<MessageDB> messageDbs = persistence.getConversation(userId1, userId2);
         ArrayList<Message> messages = new ArrayList<>();
         for(MessageDB messageDb : messageDbs){
@@ -48,7 +47,7 @@ public class MessageService implements IMessageService{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserId = ((CustomUserDetails) authentication.getPrincipal()).getId();
         if(!(currentUserId.equals(message.getSenderId())))
-            throw new AccessDeniedException("No authority to send message");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
         MessageDB messageDb = message.toMessageDb();
         messageDb.setReceiver(userPersistence.getUserById(message.getReceiverId()));

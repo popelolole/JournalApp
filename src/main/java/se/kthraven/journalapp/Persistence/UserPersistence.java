@@ -1,6 +1,7 @@
 package se.kthraven.journalapp.Persistence;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import se.kthraven.journalapp.Persistence.entities.UserDB;
 
 public class UserPersistence implements IUserPersistence{
@@ -16,12 +17,14 @@ public class UserPersistence implements IUserPersistence{
 
     @Override
     public UserDB getUserByPersonId(String personId) {
-        EntityManager em = DBManager.getEntityManager();
-
-        UserDB user = em.createQuery("SELECT u FROM UserDB u WHERE u.person.id = :pid", UserDB.class)
-                .setParameter("pid", personId)
-                .getSingleResult();
-        em.close();
+        UserDB user = null;
+        try(EntityManager em = DBManager.getEntityManager()) {
+            user = em.createQuery("SELECT u FROM UserDB u WHERE u.person.id = :pid", UserDB.class)
+                    .setParameter("pid", personId)
+                    .getSingleResult();
+        }
+        catch(NoResultException ignored){
+        }
 
         return user;
     }

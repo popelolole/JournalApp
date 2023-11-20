@@ -124,17 +124,12 @@ public class JournalService implements IJournalService{
     private void checkAuthorityDoctorOrSamePatient(String patientId){
         Person loggedIn = getCurrentUserPerson();
         if(!loggedIn.getRole().equals(Role.DOCTOR) && !loggedIn.getId().equals(patientId))
-            throw new AccessDeniedException("No authority to access patient data");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
 
     private void checkAuthorityDoctorOrOther(){
         Person loggedIn = getCurrentUserPerson();
         if(!(loggedIn.getRole().equals(Role.DOCTOR) || loggedIn.getRole().equals(Role.OTHER)))
-            throw new AccessDeniedException("No authority to create person data");
-    }
-
-    //TEST METHOD
-    public void createUsers(){
-        persistence.seedUsers();
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
 }

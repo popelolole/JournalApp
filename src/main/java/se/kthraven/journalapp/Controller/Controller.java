@@ -21,8 +21,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class Controller {
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
 
     @Autowired
     private IJournalService journalService;
@@ -42,16 +40,6 @@ public class Controller {
     @GetMapping("/user")
     public String getUserId(@RequestParam(value = "personId") String personId){
         return userService.getUserIdByPersonId(personId);
-    }
-
-    @GetMapping("/seedUsers")
-    public void seedUsers() {
-        journalService.createUsers();
-    }
-
-    @GetMapping("/greeting")
-    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 
     @GetMapping("/patient")
@@ -109,10 +97,5 @@ public class Controller {
     public Message createMessage(@RequestBody Message message){
         messageService.createMessage(message);
         return message;
-    }
-
-    @GetMapping("/seed")
-    public void seed(){
-        se.kthraven.journalapp.Persistence.JournalPersistence.seedData();
     }
 }

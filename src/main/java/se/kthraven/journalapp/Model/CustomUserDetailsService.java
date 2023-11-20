@@ -2,6 +2,7 @@ package se.kthraven.journalapp.Model;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import se.kthraven.journalapp.Model.classes.CustomUserDetails;
 import se.kthraven.journalapp.Model.classes.Person;
 import se.kthraven.journalapp.Persistence.IUserPersistence;
@@ -41,7 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public String getUserIdByPersonId(String personId){
         UserDB user = userPersistence.getUserByPersonId(personId);
         if(user == null)
-            throw new EntityNotFoundException("User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return user.getId();
     }
 
