@@ -75,8 +75,6 @@ public class JournalService implements IJournalService{
     public Collection<Encounter> getEncountersByPatient(String patientId){
         checkAuthorityDoctorOrSamePatient(patientId);
         Collection<EncounterDB> encounterDbs = persistence.getEncountersByPatient(patientId);
-        if(encounterDbs.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         ArrayList<Encounter> encounters = new ArrayList<>();
         for(EncounterDB encounterDb : encounterDbs){
             encounters.add(Encounter.from(encounterDb));
