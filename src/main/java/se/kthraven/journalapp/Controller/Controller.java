@@ -39,6 +39,11 @@ public class Controller {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @GetMapping("/user")
+    public String getUserId(@RequestParam(value = "personId") String personId){
+        return userService.getUserIdByPersonId(personId);
+    }
+
     @GetMapping("/seedUsers")
     public void seedUsers() {
         journalService.createUsers();

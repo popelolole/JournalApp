@@ -15,6 +15,18 @@ public class UserPersistence implements IUserPersistence{
     }
 
     @Override
+    public UserDB getUserByPersonId(String personId) {
+        EntityManager em = DBManager.getEntityManager();
+
+        UserDB user = em.createQuery("SELECT u FROM UserDB u WHERE u.person.id = :pid", UserDB.class)
+                .setParameter("pid", personId)
+                .getSingleResult();
+        em.close();
+
+        return user;
+    }
+
+    @Override
     public UserDB getUserByUsername(String username) {
         EntityManager em = DBManager.getEntityManager();
 

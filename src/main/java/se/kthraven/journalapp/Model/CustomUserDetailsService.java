@@ -35,7 +35,14 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found with username: " + username);
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().toString()));
-        return new CustomUserDetails(user.getUsername(), user.getPassword(), true, authorities, Person.from(user.getPerson()));
+        return new CustomUserDetails(user.getId(), user.getUsername(), user.getPassword(), true, authorities, Person.from(user.getPerson()));
+    }
+
+    public String getUserIdByPersonId(String personId){
+        UserDB user = userPersistence.getUserByPersonId(personId);
+        if(user == null)
+            throw new EntityNotFoundException("User not found");
+        return user.getId();
     }
 
     public UserDetails login(String username, String password){

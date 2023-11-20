@@ -7,6 +7,5 @@ import java.util.Collection;
 
 public interface IMessagePersistence {
     Collection<MessageDB> getConversation(String userId1, String userId2);
-    //MessageDB getMessage(String id);
     void createMessage(MessageDB message);
 }

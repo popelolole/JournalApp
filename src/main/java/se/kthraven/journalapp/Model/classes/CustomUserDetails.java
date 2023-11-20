@@ -7,13 +7,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
+    private String id;
     private String username;
     private String password;
     private boolean enabled;
     private Collection<SimpleGrantedAuthority> authorities;
     private Person person;
 
-    public CustomUserDetails(String username, String password, boolean enabled, Collection<SimpleGrantedAuthority> authorities, Person person) {
+    public CustomUserDetails(String id, String username, String password, boolean enabled, Collection<SimpleGrantedAuthority> authorities, Person person) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.enabled = enabled;
@@ -62,5 +64,9 @@ public class CustomUserDetails implements UserDetails {
 
     public Person getPerson() {
         return person;
+    }
+
+    public String getId() {
+        return id;
     }
 }
