@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import se.kthraven.journalapp.Model.CustomUserDetailsService;
 import se.kthraven.journalapp.Model.IJournalService;
+import se.kthraven.journalapp.Model.IMessageService;
 import se.kthraven.journalapp.Model.classes.*;
 
 import java.util.Collection;
@@ -28,6 +29,9 @@ public class Controller {
 
     @Autowired
     private CustomUserDetailsService userService;
+
+    @Autowired
+    private IMessageService messageService;
 
     @GetMapping("/login")
     public ResponseEntity<UserDetails> login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
@@ -89,6 +93,17 @@ public class Controller {
     public Observation createObservation(@RequestBody Observation observation, @RequestParam(value = "encounterId") String encounterId){
         journalService.createObservation(observation, encounterId);
         return observation;
+    }
+
+    @GetMapping("/messages")
+    public Collection<Message> getConversation(@RequestParam String userId1, @RequestParam String userId2){
+        return messageService.getConversation(userId1, userId2);
+    }
+
+    @PostMapping("/message")
+    public Message createMessage(@RequestBody Message message){
+        messageService.createMessage(message);
+        return message;
     }
 
     @GetMapping("/seed")

@@ -24,11 +24,6 @@ public class JournalService implements IJournalService{
     @Autowired
     private IJournalPersistence persistence;
 
-    public Collection<Person> getAllPatients(){
-        //
-        return null;
-    }
-
     @Override
     public Patient getPatient(String id){
         checkAuthorityDoctorOrSamePatient(id);
@@ -74,10 +69,6 @@ public class JournalService implements IJournalService{
 
         PersonDB personDb = patient.toPersonDB();
         persistence.createPerson(personDb);
-    }
-
-    public void updatePatient(Person patient){
-        //
     }
 
     @Override

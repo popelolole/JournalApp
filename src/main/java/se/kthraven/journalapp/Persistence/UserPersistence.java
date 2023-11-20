@@ -5,6 +5,16 @@ import se.kthraven.journalapp.Persistence.entities.UserDB;
 
 public class UserPersistence implements IUserPersistence{
     @Override
+    public UserDB getUserById(String id) {
+        EntityManager em = DBManager.getEntityManager();
+
+        UserDB user = em.find(UserDB.class, id);
+
+        em.close();
+        return user;
+    }
+
+    @Override
     public UserDB getUserByUsername(String username) {
         EntityManager em = DBManager.getEntityManager();
 
